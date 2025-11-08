@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Login</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body class="fade-enter">
+  <div class="brandbar container">
+    <span class="dot"></span>
+    <strong>EcoPath</strong>
+  </div>
+
+  <main class="auth-shell center">
+    <section class="auth-card">
+      <h1 class="auth-title">Sign into your<br>Account</h1>
+      <p class="auth-sub">Enter your mine id and password to log in to your account</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label class="small" for="mineId">Enter mine id</label>
+          <input id="mineId" name="mineId" placeholder="e.g. IN-COAL-0021" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label class="small" for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+          <div class="form-hint"><a class="link-muted" href="#" onclick="return false;">Forgot Password?</a></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" style="width:100%">Login</button>
+        </div>
+        <div class="meta">Do you have an account? <a href="register.html">Register</a></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="./js/app.js"></script>
+  <script>
+    EcoPath && EcoPath.bindLogin('#loginForm');
+  </script>
+</body>
+</html>

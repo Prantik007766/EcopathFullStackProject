@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Mines</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>EcoPath</strong>
+        <button id="sidebarToggle" class="toggle">☰</button>
+      </div>
+      <nav class="menu">
+        <a href="home.html"><span class="label">Home</span></a>
+        <a href="ecalculator.html"><span class="label">ECalculator</span></a>
+        <a href="pathways.html"><span class="label">Pathway</span></a>
+        <a href="offset.html"><span class="label">Offset</span></a>
+        <a href="mines.html" class="active"><span class="label">Mines</span></a>
+      </nav>
+    </aside>
+    <div class="content">
+      <div class="topbar">
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="title">Mines</div>
+        </div>
+      </div>
+      <main class="page">
+        <div class="container">
+          <section class="card span-12">
+            <h3>Create Mine</h3>
+            <form id="mineForm" class="panel">
+              <div class="row-3">
+                <label>Name<input required id="mName" type="text" placeholder="Mine name"></label>
+                <label>Type
+                  <select id="mType">
+                    <option value="0">Underground</option>
+                    <option value="1">Opencast</option>
+                    <option value="2">Mixed</option>
+                  </select>
+                </label>
+                <label>Degree
+                  <select id="mDegree">
+                    <option value="0">Degree-I</option>
+                    <option value="1">Degree-II</option>
+                    <option value="2">Degree-III</option>
+                  </select>
+                </label>
+              </div>
+              <div class="row-3">
+                <label>Location<input id="mLocation" type="text" placeholder="City/State"></label>
+                <div></div>
+                <button type="submit" class="btn primary" style="align-self:end">Create</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="card span-12">
+            <h3>Existing Mines</h3>
+            <div class="table" style="overflow:auto">
+              <table style="width:100%;border-collapse:collapse">
+                <thead>
+                  <tr>
+                    <th style="text-align:left;padding:8px">Id</th>
+                    <th style="text-align:left;padding:8px">Name</th>
+                    <th style="text-align:left;padding:8px">Type</th>
+                    <th style="text-align:left;padding:8px">Degree</th>
+                    <th style="text-align:left;padding:8px">Location</th>
+                  </tr>
+                </thead>
+                <tbody id="minesBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:5085/api/v1';
+    const typeLabel = v => ({0:'Underground',1:'Opencast',2:'Mixed'})[v] ?? v;
+    const degreeLabel = v => ({0:'Degree-I',1:'Degree-II',2:'Degree-III'})[v] ?? v;
+
+    async function loadMines(){
+      try{
+        const res = await fetch(`${API_BASE}/mines`);
+        if(!res.ok) return;
+        const data = await res.json();
+        const tbody = document.getElementById('minesBody');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        data.forEach(m => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="padding:8px;border-top:1px solid var(--divider)">${m.id}</td>
+            <td style="padding:8px;border-top:1px solid var(--divider)">${m.name}</td>
+            <td style="padding:8px;border-top:1px solid var(--divider)">${typeLabel(m.type)}</td>
+            <td style="padding:8px;border-top:1px solid var(--divider)">${degreeLabel(m.degree)}</td>
+            <td style="padding:8px;border-top:1px solid var(--divider)">${m.location ?? ''}</td>`;
+          tbody.appendChild(tr);
+        });
+      }catch(err){ /* ignore */ }
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const form = document.getElementById('mineForm');
+      if(form){
+        form.addEventListener('submit', async (e)=>{
+          e.preventDefault();
+          const name = document.getElementById('mName').value.trim();
+          const type = parseInt(document.getElementById('mType').value,10);
+          const degree = parseInt(document.getElementById('mDegree').value,10);
+          const location = document.getElementById('mLocation').value.trim();
+          if(!name){ alert('Name is required'); return; }
+          const res = await fetch(`${API_BASE}/mines`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, type, degree, location }) });
+          if(res.ok){
+            document.getElementById('mName').value = '';
+            document.getElementById('mLocation').value = '';
+            await loadMines();
+          }else{
+            const t = await res.text();
+            alert('Failed to create mine: ' + t);
+          }
+        });
+      }
+      loadMines();
+      const toggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('sidebar');
+      if(toggle && sidebar){ toggle.addEventListener('click', ()=> sidebar.classList.toggle('collapsed')); }
+    });
+  </script>
+</body>
+</html>

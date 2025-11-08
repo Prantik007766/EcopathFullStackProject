@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Dashboard</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>EcoPath</strong>
+        <button id="sidebarToggle" class="toggle">☰</button>
+      </div>
+      <nav class="menu">
+        <a href="home.html"><span class="label">Home</span></a>
+        <a href="ecalculator.html"><span class="label">ECalculator</span></a>
+        <a href="pathways.html"><span class="label">Pathway</span></a>
+        <a href="offset.html"><span class="label">Offset</span></a>
+        <a href="http://localhost:5085/report"><span class="label">Report</span></a>
+        <a href="#"><span class="label">Task</span></a>
+        <a href="profile.html"><span class="label">Profile</span></a>
+      </nav>
+    </aside>
+    <div class="content">
+      <div class="topbar">
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="title">Dashboard</div>
+          <div style="color:var(--muted)">Welcome Honey</div>
+        </div>
+      </div>
+      <main class="page">
+        <div class="container">
+          <div class="metrics">
+            <section class="metric metric--emissions">
+              <div class="title">Total Emissions</div>
+              <div class="pill" id="emissionsDelta">+5.2%</div>
+              <div class="value"><span id="emissionsVal">0</span><span class="unit"> tCO2e</span></div>
+              <div class="bar"><span id="emissionsBar" style="width:45%"></span></div>
+              <div class="delta" id="emissionsNote">vs last year</div>
+            </section>
+
+            <section class="metric metric--credits">
+              <div class="title">Carbon Credits</div>
+              <div class="pill" id="creditsDelta">+10.2%</div>
+              <div class="value"><span id="creditsVal">0</span><span class="unit"> credits</span></div>
+              <div class="bar"><span id="creditsBar" style="width:62%"></span></div>
+              <div class="delta" id="creditsNote">vs last month</div>
+            </section>
+
+            <section class="metric metric--energy">
+              <div class="title">Energy Consumption</div>
+              <div class="pill" id="energyDeltaPill">-2.1%</div>
+              <div class="value"><span id="energyVal">0</span><span class="unit"> MWh</span></div>
+              <div class="bar"><span id="energyBar" style="width:38%"></span></div>
+              <div class="delta" id="energyNote">vs last year</div>
+            </section>
+          </div>
+
+            <section class="card span-8">
+              <h3>Your Carbon Footprint</h3>
+              <div style="font-size:22px;font-weight:800;margin:6px 0">5,234 tons CO2e</div>
+              <div class="list" id="offsetList" style="margin-top:12px"></div>
+              <div class="muted" style="margin-top:12px">Remaining Footprint 2,755 tons CO2 • 47% offset</div>
+            </section>
+
+            <section class="card span-4">
+              <h3>Monthly Trend</h3>
+              <div id="bars" class="bars"></div>
+              <div id="axisX" class="axis-x"></div>
+            </section>
+
+            <section class="card span-12" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+              <div class="stack">
+                <div class="muted">Transportation</div>
+                <div style="font-weight:800">25,678 tCO2e</div>
+              </div>
+              <div class="stack">
+                <div class="muted">Total Emissions</div>
+                <div style="font-weight:800">126,456 tCO2e</div>
+              </div>
+              <div class="stack">
+                <div class="muted">Energy Consumption</div>
+                <div style="font-weight:800">85,234 MWh</div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      EcoPath && EcoPath.initDashboard();
+    });
+  </script>
+</body>
+</html>

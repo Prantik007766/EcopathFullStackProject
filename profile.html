@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Profile</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>EcoPath</strong>
+        <button id="sidebarToggle" class="toggle">☰</button>
+      </div>
+      <nav class="menu">
+        <a href="home.html"><span class="label">Home</span></a>
+        <a href="ecalculator.html"><span class="label">ECalculator</span></a>
+        <a href="pathways.html"><span class="label">Pathway</span></a>
+        <a href="offset.html"><span class="label">Offset</span></a>
+        <a href="http://localhost:5085/report"><span class="label">Report</span></a>
+        <a href="#"><span class="label">Task</span></a>
+        <a href="profile.html" class="active"><span class="label">Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="content">
+      <div class="topbar">
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="title">Profile</div>
+          <div style="color:var(--muted)">Manage your account</div>
+        </div>
+      </div>
+
+      <main class="page">
+        <div class="container" style="max-width:820px">
+          <section class="card span-12">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:72px;height:72px;border-radius:50%;border:2px solid var(--green);display:grid;place-items:center;background:#0f1413">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <div style="font-weight:800">Mine Profile</div>
+                  <div class="muted" id="creditsSummary">Carbon Credits: 0</div>
+                </div>
+              </div>
+              <button id="logoutBtn" class="btn btn-primary">Log out</button>
+            </div>
+
+            <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:14px">
+              <div>
+                <label>Mine name</label>
+                <input id="pfName" placeholder="e.g. North Ridge Mine" />
+              </div>
+              <div>
+                <label>Mine ID</label>
+                <input id="pfId" placeholder="e.g. NR-102" />
+              </div>
+              <div>
+                <label>Mine location</label>
+                <input id="pfLocation" placeholder="City, State" />
+              </div>
+              <div>
+                <label>Area</label>
+                <input id="pfArea" placeholder="Area" />
+              </div>
+              <div>
+                <label>Email</label>
+                <input id="pfEmail" type="email" placeholder="mine@example.com" />
+              </div>
+              <div>
+                <label>Contact no.</label>
+                <input id="pfPhone" type="tel" placeholder="+91 99999 99999" />
+              </div>
+            </div>
+
+            <div class="actions" style="display:flex;gap:10px;margin-top:14px">
+              <button id="saveProfile" class="btn">Save Profile</button>
+              <button id="editProfile" class="btn btn-link">Edit</button>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    // Sidebar toggle
+    (function(){
+      const toggle = document.getElementById('sidebarToggle');
+      const sidebar = document.getElementById('sidebar');
+      if(toggle && sidebar){ toggle.addEventListener('click', ()=>sidebar.classList.toggle('collapsed')); }
+    })();
+
+    // Load profile from API, fallback to localStorage
+    (async function(){
+      const set = (u)=>{
+        if(!u) return;
+        if(u.mineName) document.getElementById('pfName').value = u.mineName;
+        if(u.mineId) document.getElementById('pfId').value = u.mineId;
+        if(u.location) document.getElementById('pfLocation').value = u.location;
+        if(u.area) document.getElementById('pfArea').value = u.area;
+        if(u.email) document.getElementById('pfEmail').value = u.email;
+        if(u.phone) document.getElementById('pfPhone').value = u.phone;
+        try{ localStorage.setItem('ecopath_user', JSON.stringify(u)); }catch(_){}
+      };
+      try{
+        const res = await fetch('http://localhost:5085/api/v1/profile');
+        if(res.ok){ set(await res.json()); return; }
+      }catch(_){ }
+      try{ set(JSON.parse(localStorage.getItem('ecopath_user')||'{}')); }catch(_){}
+    })();
+
+    // Save
+    document.getElementById('saveProfile').addEventListener('click', async function(){
+      const u = {
+        mineName: document.getElementById('pfName').value,
+        mineId: document.getElementById('pfId').value,
+        location: document.getElementById('pfLocation').value,
+        area: document.getElementById('pfArea').value,
+        email: document.getElementById('pfEmail').value,
+        phone: document.getElementById('pfPhone').value
+      };
+      try{
+        const res = await fetch('http://localhost:5085/api/v1/profile', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(u) });
+        if(res.ok){
+          try{ localStorage.setItem('ecopath_user', JSON.stringify(u)); }catch(_){}
+          alert('Profile saved');
+        }else{
+          alert('Failed to save profile');
+        }
+      }catch(_){ alert('Failed to save profile'); }
+    });
+
+    // Logout -> redirect to login.html
+    document.getElementById('logoutBtn').addEventListener('click', function(){
+      try{ localStorage.removeItem('ecopath_user'); }catch(_){ }
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

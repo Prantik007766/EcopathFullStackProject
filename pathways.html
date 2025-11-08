@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Pathways</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>EcoPath</strong>
+        <button id="sidebarToggle" class="toggle">☰</button>
+      </div>
+      <nav class="menu">
+        <a href="home.html"><span class="label">Home</span></a>
+        <a href="ecalculator.html"><span class="label">ECalculator</span></a>
+        <a href="pathways.html"><span class="label">Pathway</span></a>
+        <a href="offset.html"><span class="label">Offset</span></a>
+        <a href="mines.html"><span class="label">Mines</span></a>
+        <a href="http://localhost:5085/report"><span class="label">Report</span></a>
+        <a href="#"><span class="label">Task</span></a>
+        <a href="profile.html"><span class="label">Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="content">
+      <div class="topbar">
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="title">Carbon Reduction Strategies</div>
+        </div>
+      </div>
+
+      <main class="page">
+        <div class="container ecal-container">
+
+          <section class="panel" id="sEV">
+            <h4>Electrical Vehicles for Transportation</h4>
+            <div class="row">
+              <input id="evCount" type="number" min="0" step="1" placeholder="Number of EV's">
+              <input id="evYears" type="number" min="1" step="1" placeholder="Time frame (years)">
+            </div>
+            <div class="total">Estimated CO2 reduction: <span id="evOut">0</span> tons per year</div>
+          </section>
+
+          <section class="panel" id="sRE">
+            <h4>Renewable energy sources</h4>
+            <div class="row">
+              <input id="reMW" type="number" min="0" step="any" placeholder="Installed capacity (MW)">
+              <input id="rePct" type="number" min="0" max="100" step="any" placeholder="% of energy consumed">
+            </div>
+            <div class="total">Estimated CO2 reduction: <span id="reOut">0</span> tons per year</div>
+          </section>
+
+          <h3 style="margin-top:20px">Methane Reduction Strategies</h3>
+
+          <section class="panel" id="sMC">
+            <h4>Methane capture system</h4>
+            <div class="row">
+              <input id="mcCH4" type="number" min="0" step="any" placeholder="Total captured methane (tons)">
+              <div></div>
+            </div>
+            <div class="total">Estimated CO2e reduction: <span id="mcOut">0</span> tons per year</div>
+          </section>
+
+          <section class="panel" id="sVAM">
+            <h4>Ventilation air Methane (VAM) oxidation</h4>
+            <div class="row">
+              <input id="vamCH4" type="number" min="0" step="any" placeholder="Amount of methane processed (tons)">
+              <div></div>
+            </div>
+            <div class="total">Estimated CO2e reduction: <span id="vamOut">0</span> tons per year</div>
+          </section>
+
+          <section class="panel">
+            <h4>Total Reduction</h4>
+            <div class="row" style="align-items:center">
+              <button id="calcReduce" class="btn btn-primary">Calculate Total Reduction</button>
+              <div class="total" style="text-align:right">Total reduction: <span id="reduceTotal">0.00</span> tons CO2e per year</div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      EcoPath && EcoPath.initPathways();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • ECalculator</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>EcoPath</strong>
+        <button id="sidebarToggle" class="toggle">☰</button>
+      </div>
+      <nav class="menu">
+        <a href="home.html"><span class="label">Home</span></a>
+        <a href="ecalculator.html"><span class="label">ECalculator</span></a>
+        <a href="pathways.html"><span class="label">Pathway</span></a>
+        <a href="offset.html"><span class="label">Offset</span></a>
+        <a href="mines.html"><span class="label">Mines</span></a>
+        <a href="http://localhost:5085/report"><span class="label">Report</span></a>
+        <a href="#"><span class="label">Task</span></a>
+        <a href="profile.html"><span class="label">Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="content">
+      <div class="topbar">
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="title">ECalculator</div>
+        </div>
+      </div>
+
+      <main class="page">
+        <div class="container ecal-container">
+          <div class="ecal-header">
+            <select id="mineType">
+              <option value="">Select Mine</option>
+              <option>Underground Mine</option>
+              <option>Surface Mine</option>
+            </select>
+            <select id="mineDegree">
+              <option value="">Select Degree</option>
+              <option>Degree 1</option>
+              <option>Degree 2</option>
+              <option>Degree 3</option>
+            </select>
+          </div>
+
+          <section class="panel" data-activity="drilling">
+            <h4>Drilling</h4>
+            <div class="row">
+              <select class="fuel">
+                <option value="">Fuel type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+              </select>
+              <input class="qty" type="number" min="0" step="any" placeholder="Quantity">
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel" data-activity="blasting">
+            <h4>Blasting</h4>
+            <div class="row">
+              <select class="fuel">
+                <option value="">Fuel type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+              </select>
+              <input class="qty" type="number" min="0" step="any" placeholder="Quantity">
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel" data-activity="excavation">
+            <h4>Excavation emission</h4>
+            <div class="row">
+              <select class="fuel">
+                <option value="">Fuel type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+              </select>
+              <input class="qty" type="number" min="0" step="any" placeholder="Total Coal Production in tons">
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel" data-activity="transportation">
+            <h4>Transportation</h4>
+            <div class="row">
+              <select class="fuel">
+                <option value="">Fuel type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+              </select>
+              <input class="qty" type="number" min="0" step="any" placeholder="Quantity">
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel" data-activity="crushing">
+            <h4>Crushing</h4>
+            <div class="row">
+              <select class="fuel">
+                <option value="">Fuel type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+              </select>
+              <input class="qty" type="number" min="0" step="any" placeholder="Quantity">
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel" data-activity="electricity">
+            <h4>Electricity used</h4>
+            <div class="row">
+              <input class="qty" type="number" min="0" step="any" placeholder="kWh">
+              <div></div>
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel" data-activity="other">
+            <h4>Other</h4>
+            <div class="row">
+              <select class="fuel">
+                <option value="">Fuel type</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="natural_gas">Natural Gas</option>
+              </select>
+              <input class="qty" type="number" min="0" step="any" placeholder="Quantity">
+            </div>
+            <div class="total">Total emission: <span class="out">0.00</span> tCO2e</div>
+          </section>
+
+          <section class="panel">
+            <h4>Total Carbon Footprint</h4>
+            <div class="row" style="align-items:center">
+              <button id="calcTotal" class="btn btn-primary">Calculate Total</button>
+              <div class="total" style="text-align:right">Total: <span id="totalFootprint">0.00</span> tCO2e</div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      EcoPath && EcoPath.initCalculator();
+    });
+  </script>
+</body>
+</html>

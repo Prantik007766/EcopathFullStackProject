@@ -1,0 +1,44 @@
+# Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build artifacts
+bin/
+obj/
+out/
+**/bin/
+**/obj/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs and caches
+*.log
+*.Cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (in case any tooling is added later)
+node_modules/
+dist/
+
+# ASP.NET publish outputs
+wwwroot/dist/
+
+# Rider
+*.sln.iml
+
+# dotenv (if used later)
+.env
+.env.*
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml

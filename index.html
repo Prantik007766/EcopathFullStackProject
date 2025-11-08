@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Splash</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <meta name="description" content="EcoPath splash screen">
+</head>
+<body>
+  <div class="splash" id="splash">
+    <div class="logo-wrap">
+      <div class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c4.418 0 8-3.582 8-8V7a1 1 0 0 0-1-1h-5c-4.418 0-8 3.582-8 8v5a1 1 0 0 0 1 1h5z" opacity="0"/>
+          <path d="M12 18c0-4.5 3-8 8-8"/>
+          <path d="M12 18c0-4.5-3-8-8-8"/>
+          <path d="M12 18v-6"/>
+        </svg>
+      </div>
+      <div class="logo-text">EcoPath</div>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      window.EcoPath && EcoPath.runSplash('#splash', 'login.html');
+    });
+  </script>
+</body>
+</html>

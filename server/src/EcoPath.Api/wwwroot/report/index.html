@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoPath Report</title>
+  <style>
+    :root{
+      --bg:#0e1111; --bg-soft:#121616; --panel:#101615; --text:#ecf3ef; --muted:#a3b3ab;
+      --green:#59d36c; --green-600:#39b957; --ring:rgba(89,211,108,.35);
+      --border:rgba(255,255,255,.12);
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui, Arial, sans-serif; margin:0; background:var(--bg); color:var(--text)}
+    .container{max-width:1100px;margin:22px auto;padding:0 20px}
+    h1{margin:0 0 14px;font-size:28px;letter-spacing:.2px}
+    .row{display:flex; gap:16px; flex-wrap:wrap}
+    .card{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:16px; box-shadow:0 14px 36px rgba(0,0,0,.45)}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px}
+    label{display:block;margin:0 0 6px;color:#cfe7d8;font-size:13px}
+    input,select{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background:var(--bg-soft); color:var(--text); outline:none; font-size:15px}
+    input:focus{border-color:var(--green);box-shadow:0 0 0 4px var(--ring)}
+    button{padding:10px 14px;border-radius:12px;border:1px solid transparent;background:linear-gradient(135deg,var(--green),#6fe083);color:#06220f;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(89,211,108,.28)}
+    button:hover{filter:brightness(1.03)}
+    h2{margin:6px 0 12px;font-size:18px}
+    .kpi{display:flex; gap:12px; flex-wrap:wrap}
+    .kpi .card{flex:1; min-width:200px; text-align:left; background:linear-gradient(180deg,#13211a, #0f1413); border-color:#21402f}
+    .kpi .card b{display:block;color:#bfead0;margin-bottom:6px}
+    .kpi .card div{font-size:28px;font-weight:900}
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h1>Report</h1>
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label>Title</label>
+        <input id="title" placeholder="Q4 FY25 Emissions" />
+      </div>
+  </div>
+      <div>
+        <label>Period Start</label>
+        <input id="pstart" type="date" />
+      </div>
+      <div>
+        <label>Period End</label>
+        <input id="pend" type="date" />
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <button onclick="createReport()">Create Report</button>
+      <span id="rid"></span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card" style="flex:1">
+      <h2>eCalculator Entry</h2>
+      <div class="grid">
+        <div><label>Activity</label><input id="cActivity" /></div>
+        <div><label>Fuel Type</label><input id="cFuel" placeholder="diesel, petrol, grid, natural_gas" /></div>
+        <div><label>Quantity</label><input id="cQty" type="number" step="any" /></div>
+        <div><label>Unit</label><input id="cUnit" placeholder="kg_per_liter, kg_per_kwh, kg_per_m3" /></div>
+      </div>
+      <div style="margin-top:8px"><button onclick="addCalc()">Add</button></div>
+    </div>
+
+    <div class="card" style="flex:1">
+      <h2>Pathways Entry</h2>
+      <div class="grid">
+        <div><label>EV Count</label><input id="pEv" type="number" step="any" /></div>
+        <div><label>Renewable MW</label><input id="pReMW" type="number" step="any" /></div>
+        <div><label>Renewable %</label><input id="pRePct" type="number" step="any" /></div>
+        <div><label>Methane Capture (t)</label><input id="pMc" type="number" step="any" /></div>
+        <div><label>VAM CH4 (t)</label><input id="pVam" type="number" step="any" /></div>
+      </div>
+      <div style="margin-top:8px"><button onclick="addPathways()">Add</button></div>
+    </div>
+
+    <div class="card" style="flex:1">
+      <h2>Offset Entry</h2>
+      <div class="grid">
+        <div><label>Area (ha)</label><input id="oArea" type="number" step="any" /></div>
+        <div><label>Trees / ha</label><input id="oTph" type="number" step="any" /></div>
+        <div><label>Years</label><input id="oYears" type="number" step="any" /></div>
+        <div><label>Market Rate</label><input id="oRate" type="number" step="any" /></div>
+      </div>
+      <div style="margin-top:8px"><button onclick="addOffset()">Add</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Summary</h2>
+    <div class="kpi">
+      <div class="card"><b>Total Emissions</b><div id="kEm">0</div></div>
+      <div class="card"><b>Total Pathways</b><div id="kPw">0</div></div>
+      <div class="card"><b>Total Offsets</b><div id="kOf">0</div></div>
+      <div class="card"><b>Net</b><div id="kNet">0</div></div>
+    </div>
+    <div style="margin-top:8px"><button onclick="refresh()">Refresh Summary</button> <button onclick="window.print()">Print</button></div>
+  </div>
+
+  <script>
+    const api = '/api/v1';
+    let reportId = null;
+
+    async function createReport(){
+      const res = await fetch(`${api}/reports`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        title: document.getElementById('title').value || 'Untitled',
+        periodStart: document.getElementById('pstart').value || null,
+        periodEnd: document.getElementById('pend').value || null
+      })});
+      const data = await res.json();
+      reportId = data.id;
+      document.getElementById('rid').innerText = `Report #${reportId}`;
+      refresh();
+    }
+
+    async function addCalc(){
+      if(!reportId){alert('Create report first');return;}
+      await fetch(`${api}/reports/${reportId}/calc-entries`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        activity: document.getElementById('cActivity').value,
+        fuelType: document.getElementById('cFuel').value,
+        quantity: parseFloat(document.getElementById('cQty').value||'0'),
+        unit: document.getElementById('cUnit').value
+      })});
+      refresh();
+    }
+
+    async function addPathways(){
+      if(!reportId){alert('Create report first');return;}
+      await fetch(`${api}/reports/${reportId}/pathways-entries`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        evCount: parseFloat(document.getElementById('pEv').value||'0'),
+        reMW: parseFloat(document.getElementById('pReMW').value||'0'),
+        rePct: parseFloat(document.getElementById('pRePct').value||'0'),
+        mcCH4: parseFloat(document.getElementById('pMc').value||'0'),
+        vamCH4: parseFloat(document.getElementById('pVam').value||'0')
+      })});
+      refresh();
+    }
+
+    async function addOffset(){
+      if(!reportId){alert('Create report first');return;}
+      await fetch(`${api}/reports/${reportId}/offset-entries`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        areaHectares: parseFloat(document.getElementById('oArea').value||'0'),
+        treesPerHectare: parseFloat(document.getElementById('oTph').value||'0'),
+        years: parseFloat(document.getElementById('oYears').value||'0'),
+        marketRate: parseFloat(document.getElementById('oRate').value||'0')
+      })});
+      refresh();
+    }
+
+    async function refresh(){
+      if(!reportId){return;}
+      const res = await fetch(`${api}/reports/${reportId}/summary`);
+      const s = await res.json();
+      document.getElementById('kEm').innerText = s.totalEmissions;
+      document.getElementById('kPw').innerText = s.totalPathways;
+      document.getElementById('kOf').innerText = s.totalOffsets;
+      document.getElementById('kNet').innerText = s.netEmissions;
+    }
+  </script>
+</body>
+</html>

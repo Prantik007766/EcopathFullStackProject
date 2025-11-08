@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Offset</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="dot"></span>
+        <strong>EcoPath</strong>
+        <button id="sidebarToggle" class="toggle">☰</button>
+      </div>
+      <nav class="menu">
+        <a href="home.html"><span class="label">Home</span></a>
+        <a href="ecalculator.html"><span class="label">ECalculator</span></a>
+        <a href="pathways.html"><span class="label">Pathway</span></a>
+        <a href="offset.html"><span class="label">Offset</span></a>
+        <a href="mines.html"><span class="label">Mines</span></a>
+        <a href="http://localhost:5085/report"><span class="label">Report</span></a>
+        <a href="#"><span class="label">Task</span></a>
+        <a href="#"><span class="label">Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="content">
+      <div class="topbar">
+        <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="title">Afforestation & Carbon Credits</div>
+        </div>
+      </div>
+
+      <main class="page">
+        <div class="container ecal-container">
+
+          <h3>Afforestation</h3>
+          <section class="panel" id="afforestation">
+            <div class="row">
+              <select id="afState">
+                <option value="">Select state</option>
+                <option>Andhra Pradesh</option>
+                <option>Chhattisgarh</option>
+                <option>Jharkhand</option>
+                <option>Madhya Pradesh</option>
+                <option>Maharashtra</option>
+                <option>Odisha</option>
+                <option>Rajasthan</option>
+                <option>Telangana</option>
+                <option>West Bengal</option>
+              </select>
+              <input id="afArea" type="number" min="0" step="any" placeholder="Land area (hectares)">
+            </div>
+            <div class="row">
+              <input id="afTrees" type="number" min="0" step="any" placeholder="Trees per hectare">
+              <input id="afYears" type="number" min="1" step="1" placeholder="Years">
+            </div>
+            <div class="total">Carbon reduction: <span id="afReduction">0.00</span> tons CO2/year</div>
+            <div class="total">Remaining footprint: <span id="afRemaining">0.00</span> tons CO2/year</div>
+          </section>
+
+          <h3 style="margin-top:20px">Calculate Carbon Credit</h3>
+          <section class="panel" id="credits">
+            <div class="row row-1">
+              <input id="crReduction" type="number" min="0" step="any" placeholder="Emission reduction (tons)">
+            </div>
+            <div class="row row-1">
+              <input id="crTotalCredits" type="text" placeholder="Total carbon credit earned" readonly>
+            </div>
+            <div class="row row-1">
+              <input id="crTotalCO2" type="text" placeholder="Total carbon dioxide reduced" readonly>
+            </div>
+            <div class="row row-1">
+              <input id="crRate" type="number" min="0" step="any" value="14.99" placeholder="Current market rate (Rs per credit)">
+            </div>
+            <div class="row row-1" style="justify-items:end">
+              <button id="crCalc" class="btn btn-primary" style="width:200px">Calculate</button>
+            </div>
+            <div class="row row-1">
+              <input id="crValueField" type="text" placeholder="Potential value (Rs)" readonly>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      EcoPath && EcoPath.initOffset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EcoPath • Register</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body class="fade-enter">
+  <div class="brandbar container">
+    <span class="dot"></span>
+    <strong>EcoPath</strong>
+  </div>
+
+  <main class="auth-shell center">
+    <section class="auth-card">
+      <h1 class="auth-title">Create your<br>Account</h1>
+      <p class="auth-sub">Enter your mine name and set password to create your account</p>
+
+      <form id="registerForm" novalidate>
+        <div class="field">
+          <label class="small" for="mineName">Enter mine name</label>
+          <input id="mineName" name="mineName" placeholder="e.g. Eastern Ridge" required>
+        </div>
+        <div class="field">
+          <label class="small" for="regMineId">Mine ID</label>
+          <input id="regMineId" name="mineId" placeholder="e.g. IN-COAL-0021" required>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label class="small" for="location">Mine location</label>
+            <input id="location" name="location" placeholder="e.g. Jharkhand" required>
+          </div>
+          <div class="field">
+            <label class="small" for="area">Area</label>
+            <input id="area" name="area" placeholder="km²" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label class="small" for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@company.com" required>
+          </div>
+          <div class="field">
+            <label class="small" for="phone">Contact no.</label>
+            <input id="phone" name="phone" type="tel" placeholder="+91 XXXXXXXXXX" required>
+          </div>
+        </div>
+        <div class="field">
+          <label class="small" for="setPassword">Set Password</label>
+          <input id="setPassword" name="password" type="password" placeholder="Create a strong password" required>
+        </div>
+        <div class="field">
+          <label class="small" for="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Re-enter your password" required>
+          <div class="form-hint"><a class="link-muted" href="#" onclick="return false;">Forgot Password?</a></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" style="width:100%">Sign in</button>
+        </div>
+        <div class="meta">Already have an account? <a href="login.html">Login</a></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="./js/app.js"></script>
+  <script>
+    EcoPath && EcoPath.bindRegister('#registerForm');
+  </script>
+</body>
+</html>
