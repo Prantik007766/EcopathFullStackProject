@@ -1,8 +1,8 @@
 <<<<<<< HEAD
-# EcopathDevProject
-A web Based Application for the Indian Coal mine to track the carbon footprint and  explore the pathways to neutralise the carbon Footprint.
+# Ecopath 
+A web-based application for Indian coal mines to track their carbon footprint and explore pathways to neutralize it.
 =======
-# EcopathDevProject
+# Ecopath
 Overview
 EcoPath is a web-based application designed specifically for Indian coal mines to quantify, monitor, and reduce their carbon footprint. The platform provides a centralized system to calculate emissions from mining activities, visualize the carbon footprint, and explore actionable pathways toward carbon neutrality in alignment with India’s sustainability and Net Zero goals.
 
